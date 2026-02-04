@@ -70,22 +70,6 @@ nodeSelector: {}
 tolerations: []
 affinity: {}
 
-# --- Elasticsearch 설정 ---
-elasticsearch:
-  enabled: true
-  replicas: 1
-  minimumMasterNodes: 1
-  persistence:
-    enabled: false  # 스토리지 없어도 바로 뜨게 설정
-  antiAffinity: "soft"
-  esConfig:
-    elasticsearch.yml: |
-      xpack.security.enabled: false
-      xpack.security.http.ssl.enabled: false
-      xpack.security.transport.ssl.enabled: false
-  resources:
-    requests: { cpu: "100m", memory: "512Mi" }
-    limits: { cpu: "1000m", memory: "1Gi" }
 
 # --- Logstash 설정 ---
 logstash:
@@ -125,23 +109,27 @@ logstash:
     requests: { cpu: "100m", memory: "512Mi" }
     limits: { cpu: "1000m", memory: "1Gi" }
 
+elasticsearch:
+  enabled: true
+  replicas: 1
+  # 핵심: 보안을 다시 켭니다.
+  esConfig:
+    elasticsearch.yml: |
+      xpack.security.enabled: true
+      xpack.security.http.ssl.enabled: true
+      xpack.security.transport.ssl.enabled: true
+      xpack.security.transport.ssl.verification_mode: certificate
+      xpack.security.transport.ssl.key: /usr/share/elasticsearch/config/certs/tls.key
+      xpack.security.transport.ssl.certificate: /usr/share/elasticsearch/config/certs/tls.crt
+      xpack.security.transport.ssl.certificate_authorities: /usr/share/elasticsearch/config/certs/ca.crt
+
+  # 아까 추가했던 extraEnvs(false 설정들)는 지우거나 주석 처리하세요.
+
 kibana:
   enabled: true
-  fullnameOverride: "kibana"
+  elasticsearchHosts: "https://elasticsearch-master:9200" # 다시 https로!
   setupJob:
-    enabled: false  # 이미 Job이 성공했거나 실패했으므로 이제 끕니다.
-  elasticsearchHosts: "http://elasticsearch-master:9200" # https -> http
-
-  # 보안이 꺼진 ES에 접속할 때는 토큰이나 인증서 검사가 필요 없습니다.
-  config:
-    kibana.yml: |
-      server.host: "0.0.0.0"
-      elasticsearch.hosts: ["http://elasticsearch-master:9200"]
-      elasticsearch.ssl.verificationMode: none
-      xpack.security.enabled: false
-  service:
-    type: NodePort # 외부 접속을 위해 NodePort나 Ingress 설정
-    port: 5601
+    enabled: true # 이제 보안이 켜졌으니 이 Job이 정상적으로 토큰을 가져올 겁니다.
 
 
 filebeat:
