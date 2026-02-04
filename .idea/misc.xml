@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectInspectionProfilesVisibleTreeState">
+    <entry key="Project Default">
+      <profile-state>
+        <expanded-state>
+          <State>
+            <id>Dockerfile</id>
+          </State>
+          <State>
+            <id>DotEnv</id>
+          </State>
+          <State>
+            <id>JSON 및 JSON5</id>
+          </State>
+          <State>
+            <id>JSP</id>
+          </State>
+          <State>
+            <id>JVM 언어</id>
+          </State>
+          <State>
+            <id>Java</id>
+          </State>
+          <State>
+            <id>Kotlin</id>
+          </State>
+          <State>
+            <id>MySQL</id>
+          </State>
+          <State>
+            <id>Spring</id>
+          </State>
+          <State>
+            <id>Spring CoreSpring</id>
+          </State>
+          <State>
+            <id>리소스 관리Java</id>
+          </State>
+          <State>
+            <id>발생할 수 있는 버그Kotlin</id>
+          </State>
+          <State>
+            <id>보안Java</id>
+          </State>
+          <State>
+            <id>스타일 문제Kotlin</id>
+          </State>
+          <State>
+            <id>이름 생성 규칙Kotlin</id>
+          </State>
+          <State>
+            <id>일반</id>
+          </State>
+          <State>
+            <id>장황하거나 중복 코드 구문Java</id>
+          </State>
+          <State>
+            <id>코드Spring CoreSpring</id>
+          </State>
+          <State>
+            <id>프로퍼티 파일</id>
+          </State>
+        </expanded-state>
+        <selected-state>
+          <State>
+            <id>사용자 정의</id>
+          </State>
+        </selected-state>
+      </profile-state>
+    </entry>
+  </component>
+  <component name="ProjectRootManager" version="2">
+    <output url="file://$PROJECT_DIR$/out" />
+  </component>
+</project>
