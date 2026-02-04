@@ -75,6 +75,11 @@ filebeat:
   extraVolumes: [ ]
   extraVolumeMounts: [ ]
   secretMounts: [ ]
+  indexManagement:
+    enabled: false
+  extraEnvs:
+    - name: ELASTICSEARCH_HOSTS
+      value: ""
   daemonset:
     enabled: true
     filebeatConfig:
