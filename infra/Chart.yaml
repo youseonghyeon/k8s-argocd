@@ -6,6 +6,6 @@ version: 0.1.0
 appVersion: "1.16.0"
 
 dependencies:
-  - name: kafka
-    version: "30.x.x"
-    repository: "oci://registry-1.docker.io/bitnamicharts"
+  - name: strimzi-kafka-operator
+    version: "0.45.x"
+    repository: "https://strimzi.io/charts/"

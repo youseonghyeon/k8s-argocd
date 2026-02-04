@@ -1,0 +1,27 @@
+# infra/templates/kafka.yaml
+apiVersion: kafka.strimzi.io/v1beta2
+kind: Kafka
+metadata:
+  name: my-cluster
+  namespace: kafka-test
+spec:
+  kafka:
+    version: 3.7.0 # Apache 공식 이미지를 사용하므로 유료화 걱정 없음
+    replicas: 1
+    listeners:
+      - name: plain
+        port: 9092
+        type: internal
+        tls: false
+    config:
+      offsets.topic.replication.factor: 1
+      transaction.state.log.replication.factor: 1
+      transaction.state.log.min.isr: 1
+      default.replication.factor: 1
+      min.insync.replicas: 1
+      inter.broker.protocol.version: "3.7"
+    storage:
+      type: ephemeral # 테스트용 (데이터 보존하려면 persistent-claim 사용)
+  entityOperator: # 토픽과 유저 관리를 도와주는 툴
+    topicOperator: {}
+    userOperator: {}

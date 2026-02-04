@@ -69,12 +69,3 @@ volumeMounts: []
 nodeSelector: {}
 tolerations: []
 affinity: {}
-
-kafka:
-  replicaCount: 1
-  kraft:
-    enabled: true
-  zookeeper:
-    enabled: false
-  persistence:
-    enabled: false
