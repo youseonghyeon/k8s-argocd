@@ -113,6 +113,10 @@ elasticsearch:
 
 kibana:
   protocol: http
+  secretMounts:
+    - name: elasticsearch-master-certs
+      secretName: elasticsearch-master-certs
+      path: /usr/share/kibana/config/certs
   kibanaConfig:
     kibana.yml: |
       server.host: "0.0.0.0"
