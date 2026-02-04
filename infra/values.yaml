@@ -70,7 +70,31 @@ nodeSelector: {}
 tolerations: []
 affinity: {}
 
+# --- Elasticsearch 설정 ---
+elasticsearch:
+  enabled: true
+  replicas: 1
+  minimumMasterNodes: 1
+  persistence:
+    enabled: false  # 스토리지 없어도 바로 뜨게 설정
+  antiAffinity: "soft"
+  esConfig:
+    elasticsearch.yml: |
+      xpack.security.enabled: false
+      xpack.security.http.ssl.enabled: false
+      xpack.security.transport.ssl.enabled: false
+      discovery.type: single-node
+  resources:
+    requests: { cpu: "100m", memory: "512Mi" }
+    limits: { cpu: "1000m", memory: "1Gi" }
+
+# --- Logstash 설정 ---
 logstash:
+  enabled: true    # 이 줄이 없으면 헬름이 템플릿을 생성하지 않습니다.
+  replicaCount: 1
+  persistence:
+    enabled: false # 디스크 권한 문제 방지를 위해 비활성화
+
   logstashConfig:
     logstash.yml: |
       http.host: "0.0.0.0"
@@ -80,45 +104,27 @@ logstash:
     main.conf: |
       input {
         kafka {
-          bootstrap_servers => "my-cluster-kafka-bootstrap:9092"
+          bootstrap_servers => "my-cluster-kafka-bootstrap.infra.svc.cluster.local:9092"
           topics => ["spring-boot-logs"]
           codec => "json"
           group_id => "logstash-group"
         }
       }
       filter {
-        # 여기서 추가적인 데이터 가공 가능 (예: 특정 필드 삭제)
         if [kubernetes][container][name] == "infra" {
           mutate { add_tag => ["nginx-logs"] }
         }
       }
       output {
         elasticsearch {
-          hosts => ["http://elasticsearch-master:9200"]
+          # 도메인 주소를 전체 주소(FQDN)로 작성하여 DNS 에러 방지
+          hosts => ["http://elasticsearch-master.infra.svc.cluster.local:9200"]
           index => "k8s-logs-%{+YYYY.MM.dd}"
         }
       }
-
-elasticsearch:
-  enabled: true  # 1. 명시적으로 활성화 (일부 차트에서 필수)
-  replicas: 1
-  minimumMasterNodes: 1
-  persistence:
-    enabled: false
-  antiAffinity: "soft"
   resources:
-    requests:
-      cpu: "500m"
-      memory: "1Gi"
-    limits:
-      cpu: "1000m"
-      memory: "2Gi"
-  esConfig:
-    elasticsearch.yml: |
-      xpack.security.enabled: false
-      xpack.security.http.ssl.enabled: false
-      xpack.security.transport.ssl.enabled: false
-      discovery.type: single-node
+    requests: { cpu: "100m", memory: "512Mi" }
+    limits: { cpu: "1000m", memory: "1Gi" }
 
 kibana:
   protocol: http
