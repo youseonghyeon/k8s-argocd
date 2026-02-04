@@ -113,6 +113,9 @@ elasticsearch:
 
 kibana:
   protocol: http
+  setupJob:
+    enabled: false
+    createNextToken: false
   secretMounts:
     - name: elasticsearch-master-certs
       secretName: elasticsearch-master-certs
