@@ -125,23 +125,23 @@ logstash:
     requests: { cpu: "100m", memory: "512Mi" }
     limits: { cpu: "1000m", memory: "1Gi" }
 
-#kibana:
-#  protocol: http
-#  setupJob:
-#    enabled: false
-#    createNextToken: false
-#  secretMounts:
-#    - name: elasticsearch-master-certs
-#      secretName: elasticsearch-master-certs
-#      path: /usr/share/kibana/config/certs
-#  kibanaConfig:
-#    kibana.yml: |
-#      server.host: "0.0.0.0"
-#      elasticsearch.hosts: ["http://elasticsearch-master:9200"]
-#      elasticsearch.ssl.verificationMode: none
-#  service:
-#    type: NodePort # 외부 접속을 위해 NodePort나 Ingress 설정
-#    port: 5601
+kibana:
+  protocol: http
+  setupJob:
+    enabled: false
+    createNextToken: false
+  secretMounts:
+    - name: elasticsearch-master-certs
+      secretName: elasticsearch-master-certs
+      path: /usr/share/kibana/config/certs
+  kibanaConfig:
+    kibana.yml: |
+      server.host: "0.0.0.0"
+      elasticsearch.hosts: ["http://elasticsearch-master:9200"]
+      elasticsearch.ssl.verificationMode: none
+  service:
+    type: NodePort # 외부 접속을 위해 NodePort나 Ingress 설정
+    port: 5601
 
 
 filebeat:
