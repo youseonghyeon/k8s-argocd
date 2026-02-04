@@ -18,6 +18,6 @@ dependencies:
   - name: logstash
     version: "8.5.1"
     repository: "https://helm.elastic.co"
-  - name: kibana
-    version: "8.5.1"
-    repository: "https://helm.elastic.co"
+#  - name: kibana
+#    version: "8.5.1"
+#    repository: "https://helm.elastic.co"
