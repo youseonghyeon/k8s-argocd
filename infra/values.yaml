@@ -105,9 +105,19 @@ elasticsearch:
   resources:
     requests: { cpu: "500m", memory: "1Gi" }
     limits: { cpu: "1000m", memory: "2Gi" }
+  esConfig:
+    elasticsearch.yml: |
+      xpack.security.enabled: false
+      xpack.security.http.ssl.enabled: false
+      xpack.security.transport.ssl.enabled: false
 
 kibana:
-  elasticsearchHosts: "http://elasticsearch-master:9200"
+  protocol: http
+  kibanaConfig:
+    kibana.yml: |
+      server.host: "0.0.0.0"
+      elasticsearch.hosts: ["http://elasticsearch-master:9200"]
+      elasticsearch.ssl.verificationMode: none
   service:
     type: NodePort # 외부 접속을 위해 NodePort나 Ingress 설정
     port: 5601
