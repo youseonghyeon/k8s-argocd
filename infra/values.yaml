@@ -69,3 +69,29 @@ volumeMounts: []
 nodeSelector: {}
 tolerations: []
 affinity: {}
+
+
+filebeat:
+  daemonset:
+    filebeatConfig:
+      filebeat.yml: |
+        filebeat.inputs:
+        - type: container
+          paths:
+            - /var/log/containers/*.log
+          # Spring Boot 로그가 JSON이므로 Filebeat에서 바로 파싱
+          processors:
+            - decode_json_fields:
+                fields: ["message"]
+                target: ""
+                overwrite_keys: true
+            - add_kubernetes_metadata:
+                host: ${NODE_NAME}
+
+        output.kafka:
+          hosts: ["my-cluster-kafka-bootstrap.infra.svc.cluster.local:9092"]
+          topic: "spring-boot-logs"
+          partition.round_robin:
+            reachable_only: true
+          required_acks: 1
+          compression: gzip

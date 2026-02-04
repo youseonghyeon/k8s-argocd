@@ -9,3 +9,6 @@ dependencies:
   - name: strimzi-kafka-operator
     version: "0.45.x"
     repository: "https://strimzi.io/charts/"
+  - name: filebeat
+    version: "8.5.1"
+    repository: "https://helm.elastic.co"
