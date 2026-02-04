@@ -70,6 +70,35 @@ nodeSelector: {}
 tolerations: []
 affinity: {}
 
+logstash:
+  logstashConfig:
+    logstash.yml: |
+      http.host: "0.0.0.0"
+      pipeline.ordered: auto
+
+  pipeline:
+    main.conf: |
+      input {
+        kafka {
+          bootstrap_servers => "my-cluster-kafka-bootstrap:9092"
+          topics => ["spring-boot-logs"]
+          codec => "json"
+          group_id => "logstash-group"
+        }
+      }
+      filter {
+        # 여기서 추가적인 데이터 가공 가능 (예: 특정 필드 삭제)
+        if [kubernetes][container][name] == "infra" {
+          mutate { add_tag => ["nginx-logs"] }
+        }
+      }
+      output {
+        elasticsearch {
+          hosts => ["http://elasticsearch-master:9200"]
+          index => "k8s-logs-%{+YYYY.MM.dd}"
+        }
+      }
+
 elasticsearch:
   replicas: 1 # 테스트용이므로 1개만 (운영은 3개 권장)
   minimumMasterNodes: 1
