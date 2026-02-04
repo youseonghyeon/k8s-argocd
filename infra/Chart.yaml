@@ -12,3 +12,12 @@ dependencies:
   - name: filebeat
     version: "8.5.1"
     repository: "https://helm.elastic.co"
+  - name: elasticsearch
+    version: "8.5.1"
+    repository: "https://helm.elastic.co"
+  - name: logstash
+    version: "8.5.1"
+    repository: "https://helm.elastic.co"
+  - name: kibana
+    version: "8.5.1"
+    repository: "https://helm.elastic.co"
