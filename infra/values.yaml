@@ -126,6 +126,7 @@ kibana:
     type: NodePort # 외부 접속을 위해 NodePort나 Ingress 설정
     port: 5601
 
+
 filebeat:
   extraVolumes: [ ]
   extraVolumeMounts: [ ]
