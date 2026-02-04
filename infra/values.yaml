@@ -100,16 +100,25 @@ logstash:
       }
 
 elasticsearch:
-  replicas: 1 # 테스트용이므로 1개만 (운영은 3개 권장)
+  enabled: true  # 1. 명시적으로 활성화 (일부 차트에서 필수)
+  replicas: 1
   minimumMasterNodes: 1
+  persistence:
+    enabled: false
+  antiAffinity: "soft"
   resources:
-    requests: { cpu: "500m", memory: "1Gi" }
-    limits: { cpu: "1000m", memory: "2Gi" }
+    requests:
+      cpu: "500m"
+      memory: "1Gi"
+    limits:
+      cpu: "1000m"
+      memory: "2Gi"
   esConfig:
     elasticsearch.yml: |
       xpack.security.enabled: false
       xpack.security.http.ssl.enabled: false
       xpack.security.transport.ssl.enabled: false
+      discovery.type: single-node
 
 kibana:
   protocol: http
