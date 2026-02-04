@@ -1,0 +1,14 @@
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaNodePool
+metadata:
+  name: dual-role-pool
+  namespace: infra # operator가 떠 있는 곳과 동일하게
+  labels:
+    strimzi.io/cluster: my-cluster # 아래 Kafka 리소스의 name과 일치해야 함
+spec:
+  replicas: 1
+  roles:
+    - controller
+    - broker
+  storage:
+    type: ephemeral
