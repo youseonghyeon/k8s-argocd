@@ -8,7 +8,7 @@ metadata:
     strimzi.io/kraft: enabled       # KRaft 모드 명시
 spec:
   kafka:
-    version: 3.7.0
+    version: 3.8.1
     # replicas는 이제 NodePool에서 관리하므로 여기서 적지 않습니다.
     listeners:
       - name: plain
