@@ -128,14 +128,14 @@ elasticsearch:
 kibana:
   enabled: true
   elasticsearchHosts: "https://elasticsearch-master:9200"
-  preInstallJob:
-    enabled: false
+  serviceAccount:
+    create: true
   extraEnvs:
     - name: ELASTICSEARCH_USERNAME
       value: "elastic"
     - name: ELASTICSEARCH_PASSWORD
       value: "jXVVGdqThZfKzYgr"
-    - name: KIBANA_PASSWORD
+    - name: ELASTIC_PASSWORD        # 이 이름을 쓰는 차트가 아주 많습니다.
       value: "jXVVGdqThZfKzYgr"
     - name: ELASTICSEARCH_SSL_VERIFICATIONMODE
       value: "none"
