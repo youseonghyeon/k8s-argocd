@@ -79,16 +79,23 @@ elasticsearch:
 
 logstash:
   enabled: true
+  extraVolumes:
+    - name: es-certs
+      secret:
+        secretName: elasticsearch-master-certs # ES 설치 시 생성된 Secret 이름
+  extraVolumeMounts:
+    - name: es-certs
+      mountPath: /usr/share/logstash/config/certs
+      readOnly: true
 
-  # 1. Logstash 내부 시스템이 엉뚱한 주소(http://elasticsearch)를 보지 않도록 설정
+  # 2. 로그스태시 자체 시스템 설정 (라이선스 체크 에러 해결)
   logstashConfig:
     logstash.yml: |
+      http.host: "0.0.0.0"
       xpack.monitoring.enabled: false
-      xpack.monitoring.elasticsearch.hosts: ["https://elasticsearch-master.infra.svc.cluster.local:9200"]
-      xpack.monitoring.elasticsearch.username: "elastic"
-      xpack.monitoring.elasticsearch.password: "KiDNBQtI8js4rmtZ"
-      xpack.monitoring.elasticsearch.ssl.certificate_authority: "/usr/share/logstash/config/certs/ca.crt"
+      xpack.management.enabled: false
 
+  # 3. 실제 로그 수집 파이프라인 설정
   pipeline:
     main.conf: |
       input {
@@ -104,11 +111,33 @@ logstash:
           hosts => ["https://elasticsearch-master.infra.svc.cluster.local:9200"]
           user => "elastic"
           password => "KiDNBQtI8js4rmtZ"
+          # SSL 설정 정석
           ssl => true
           ssl_certificate_verification => true
           cacert => "/usr/share/logstash/config/certs/ca.crt"
+          index => "k8s-logs-%{+YYYY.MM.dd}"
         }
       }
+
+#logstash:
+#  enabled: true
+#  pipeline:
+#    main.conf: |
+#      input {
+#        kafka {
+#          bootstrap_servers => "my-cluster-kafka-bootstrap.infra.svc.cluster.local:9092"
+#          topics => ["my-log-topic"]
+#          codec => "json"
+#          group_id => "logstash-group"
+#        }
+#      }
+#      output {
+#        elasticsearch {
+#          hosts => ["http://elasticsearch-master.infra.svc.cluster.local:9200"]
+#          index => "k8s-logs-%{+YYYY.MM.dd}"
+#        }
+#      }
+
 
 filebeat:
   daemonset:
