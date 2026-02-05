@@ -70,12 +70,10 @@ nodeSelector: {}
 tolerations: []
 affinity: {}
 
-# --- Elasticsearch 7.17.3 ---
 elasticsearch:
   enabled: true
   replicas: 1
 
-# --- Logstash 7.17.3 ---
 logstash:
   enabled: true
   pipeline:
@@ -98,7 +96,6 @@ logstash:
         }
       }
 
-# --- Filebeat 7.17.3 ---
 filebeat:
   daemonset:
     enabled: true
