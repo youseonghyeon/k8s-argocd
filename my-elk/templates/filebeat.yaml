@@ -5,8 +5,8 @@ metadata:
 spec:
   type: filebeat
   version: {{ .Values.elkVersion | default "8.12.0" }}
-  elasticsearchRef:
-    name: {{ .Release.Name }}-es
+{{/*  elasticsearchRef:*/}}
+{{/*    name: {{ .Release.Name }}-es*/}}
   kibanaRef:
     name: {{ .Release.Name }}-kb
   config:
@@ -20,6 +20,11 @@ spec:
           matchers:
             - logs_path:
                 logs_path: "/var/log/containers/"
+    output.kafka:
+      hosts: [ "my-cluster-kafka-bootstrap.kafka.svc:9092" ]
+      topic: "k8s-logs"
+      codec.json:
+        pretty: false
   daemonSet:
     podTemplate:
       spec:
