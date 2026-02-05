@@ -86,14 +86,14 @@ elasticsearch:
       http.host: 0.0.0.0
 
 # --- Kibana 7.17.3 ---
-kibana:
-  commonAnnotations:
-    argocd.argoproj.io/sync-wave: "2"
-  forcePostStart: false
-  createServiceAccountToken: false
-  enabled: true
-  imageTag: "7.17.3"
-  elasticsearchHosts: "http://elasticsearch-master.infra.svc.cluster.local:9200"
+#kibana:
+#  commonAnnotations:
+#    argocd.argoproj.io/sync-wave: "2"
+#  forcePostStart: false
+#  createServiceAccountToken: false
+#  enabled: true
+#  imageTag: "7.17.3"
+#  elasticsearchHosts: "http://elasticsearch-master.infra.svc.cluster.local:9200"
 
 # --- Logstash 7.17.3 ---
 logstash:
