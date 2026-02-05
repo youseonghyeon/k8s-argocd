@@ -5,7 +5,7 @@ metadata:
   namespace: kafka
 spec:
   kafka:
-    version: 3.6.1
+    version: 4.1.0
     replicas: 1  # 브로커 1대로 축소
     listeners:
       - name: plain
