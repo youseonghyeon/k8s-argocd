@@ -165,3 +165,7 @@ elkVersion: "8.12.0"
 elasticsearch:
   nodeCount: 1
   storage: "10Gi"
+
+kibana:
+  serviceType: NodePort  # 로컬/베어메탈 환경이면 NodePort, 클라우드면 LoadBalancer 추천
+  nodePort: 30601

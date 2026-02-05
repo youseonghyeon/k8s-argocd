@@ -8,3 +8,14 @@ spec:
   elasticsearchRef:
     # 위에서 정의한 Elasticsearch의 이름과 연결
     name: {{ .Release.Name }}-es
+  http:
+    service:
+      spec:
+        type: {{ .Values.kibana.serviceType | default "NodePort" }} # NodePort 또는 LoadBalancer
+        ports:
+          - name: http
+            port: 5601
+            targetPort: 5601
+            {{- if and (eq .Values.kibana.serviceType "NodePort") .Values.kibana.nodePort }}
+            nodePort: {{ .Values.kibana.nodePort }}
+            {{- end }}
