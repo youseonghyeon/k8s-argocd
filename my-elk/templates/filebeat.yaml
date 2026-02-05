@@ -5,8 +5,6 @@ metadata:
 spec:
   type: filebeat
   version: {{ .Values.elkVersion | default "8.12.0" }}
-  kibanaRef:
-    name: {{ .Release.Name }}-kb
   config:
     filebeat.inputs:
       - type: container
