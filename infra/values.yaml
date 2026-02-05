@@ -139,9 +139,6 @@ kibana:
       value: "jXVVGdqThZfKzYgr"
     - name: ELASTICSEARCH_SSL_VERIFICATIONMODE
       value: "none"
-  elasticsearchExternalConfig:
-    elasticsearch.yml: |
-      elasticsearch.ssl.verificationMode: none # 테스트 환경이라면 인증서 검증 무시
 
 filebeat:
   extraVolumes: [ ]
