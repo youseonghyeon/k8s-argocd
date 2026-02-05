@@ -13,7 +13,7 @@ spec:
       spec:
         type: {{ .Values.kibana.serviceType | default "NodePort" }} # NodePort 또는 LoadBalancer
         ports:
-          - name: http
+          - name: https
             port: 5601
             targetPort: 5601
             {{- if and (eq .Values.kibana.serviceType "NodePort") .Values.kibana.nodePort }}
