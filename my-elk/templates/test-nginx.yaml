@@ -1,4 +1,27 @@
-# test-nginx-with-exporter.yaml
+# 1. Nginx 설정 (Stub Status 활성화)
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-status-config
+  namespace: default
+data:
+  default.conf: |
+    server {
+        listen 80;
+        location / {
+            root /usr/share/nginx/html;
+            index index.html;
+        }
+        # 익스포터가 내부적으로 데이터를 읽어갈 수 있도록 설정
+        location /stub_status {
+            stub_status on;
+            access_log off;
+            allow 127.0.0.1;
+            deny all;
+        }
+    }
+---
+# 2. Nginx & Exporter 사이드카 배포
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -34,24 +57,42 @@ spec:
           configMap:
             name: nginx-status-config
 ---
+# 3. 서비스 (두 개의 포트 노출)
 apiVersion: v1
-kind: ConfigMap
+kind: Service
 metadata:
-  name: nginx-status-config
+  name: test-nginx
   namespace: default
-data:
-  default.conf: |
-    server {
-        listen 80;
-        location / {
-            root /usr/share/nginx/html;
-            index index.html;
-        }
-        # 익스포터가 데이터를 긁어갈 수 있도록 상태 페이지 활성화
-        location /stub_status {
-            stub_status on;
-            access_log off;
-            allow 127.0.0.1;
-            deny all;
-        }
-    }
+  labels:
+    app: test-nginx
+spec:
+  ports:
+    - name: http
+      port: 80
+      targetPort: 80
+    - name: metrics
+      port: 9113
+      targetPort: 9113
+  selector:
+    app: test-nginx
+---
+# 4. 서비스모니터 (프로메테우스 수집 등록)
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: nginx-monitor
+  namespace: monitoring
+  labels:
+    # 설치하신 Helm 릴리스 이름(prometheus-stack)과 일치해야 함
+    release: prometheus-stack
+spec:
+  selector:
+    matchLabels:
+      app: test-nginx
+  namespaceSelector:
+    matchNames:
+      - default
+  endpoints:
+    - port: metrics # 서비스의 포트 이름 'metrics'(9113)를 가리킴
+      interval: 15s
+      path: /metrics
