@@ -129,7 +129,7 @@ kibana:
   enabled: true
   elasticsearchHosts: "https://elasticsearch-master:9200" # 다시 https로!
   setupJob:
-    enabled: true # 이제 보안이 켜졌으니 이 Job이 정상적으로 토큰을 가져올 겁니다.
+    enabled: false # 이제 보안이 켜졌으니 이 Job이 정상적으로 토큰을 가져올 겁니다.
 
 
 filebeat:
