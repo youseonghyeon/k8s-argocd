@@ -1,4 +1,4 @@
-# Default values for elk-stack.
+# Default values for my-elk.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
@@ -159,3 +159,9 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+elkVersion: "8.12.0"
+
+elasticsearch:
+  nodeCount: 1
+  storage: "10Gi"
