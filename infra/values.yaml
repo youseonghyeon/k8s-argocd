@@ -1,143 +1,43 @@
-replicaCount: 1
+# Kibana 섹션은 완전히 제거되었습니다.
 
-image:
-  repository: nginx
-  pullPolicy: IfNotPresent
-  tag: ""
-imagePullSecrets: []
-nameOverride: ""
-fullnameOverride: ""
-
-serviceAccount:
-  create: true
-  automount: true
-  annotations: {}
-  name: ""
-
-podAnnotations: {}
-podLabels: {}
-podSecurityContext: {}
-securityContext: {}
-
-service:
-  type: ClusterIP
-  port: 80
-
-ingress:
-  enabled: false
-  className: ""
-  annotations: {}
-  hosts:
-    - host: chart-example.local
-      paths:
-        - path: /
-          pathType: ImplementationSpecific
-  tls: []
-
-httpRoute:
-  enabled: false
-  annotations: {}
-  parentRefs:
-  - name: gateway
-    sectionName: http
-    hostnames:
-  - chart-example.local
-  rules:
-  - matches:
-    - path:
-        type: PathPrefix
-        value: /headers
-
-resources: {}
-livenessProbe:
-  httpGet:
-    path: /
-    port: http
-readinessProbe:
-  httpGet:
-    path: /
-    port: http
-
-autoscaling:
-  enabled: false
-  minReplicas: 1
-  maxReplicas: 100
-  targetCPUUtilizationPercentage: 80
-
-volumes: []
-volumeMounts: []
-nodeSelector: {}
-tolerations: []
-affinity: {}
-
-
-# --- Elasticsearch 7.17.3 ---
 elasticsearch:
-  enabled: true
   imageTag: "7.17.3"
   replicas: 1
-  # 7버전 보안 설정 간소화
   esConfig:
     elasticsearch.yml: |
-      xpack.security.enabled: false
-      xpack.security.transport.ssl.enabled: false
-      http.host: 0.0.0.0
+      xpack.security.enabled: true
+      xpack.security.http.ssl.enabled: true
+      xpack.security.transport.ssl.enabled: true
 
-# --- Kibana 7.17.3 ---
-#kibana:
-#  commonAnnotations:
-#    argocd.argoproj.io/sync-wave: "2"
-#  forcePostStart: false
-#  createServiceAccountToken: false
-#  enabled: true
-#  imageTag: "7.17.3"
-#  elasticsearchHosts: "http://elasticsearch-master.infra.svc.cluster.local:9200"
-
-# --- Logstash 7.17.3 ---
 logstash:
-  enabled: true
   imageTag: "7.17.3"
-  persistence:
-    enabled: false
-
   pipeline:
     main.conf: |
       input {
         kafka {
           bootstrap_servers => "my-cluster-kafka-bootstrap.infra.svc.cluster.local:9092"
           topics => ["spring-boot-logs"]
-          codec => "json"
           group_id => "logstash-group"
         }
       }
       output {
         elasticsearch {
-          hosts => ["http://elasticsearch-master.infra.svc.cluster.local:9200"]
-          index => "k8s-logs-%{+YYYY.MM.dd}"
-          # 7버전 보안 미사용 시 user/password 주석 처리
-          # user => "elastic"
-          # password => "jXVVGdqThZfKzYgr"
+          hosts => ["https://elasticsearch-master.infra.svc.cluster.local:9200"]
+          user => "elastic"
+          password => "${ELASTIC_PASSWORD}"
+          ssl => true
+          ssl_certificate_verification => true
+          cacert => "/usr/share/logstash/config/certs/ca.crt"
         }
       }
 
-# --- Filebeat 7.17.3 ---
 filebeat:
   imageTag: "7.17.3"
-  daemonset:
-    enabled: true
-    filebeatConfig:
-      filebeat.yml: |
-        filebeat.inputs:
+  filebeatConfig:
+    filebeat.yml: |
+      filebeat.inputs:
         - type: container
-          paths:
-            - /var/log/containers/*.log
-          processors:
-            - add_kubernetes_metadata:
-                host: ${NODE_NAME}
-            - decode_json_fields:
-                fields: ["message"]
-                target: ""
-                overwrite_keys: true
-        output.kafka:
-          hosts: ["my-cluster-kafka-bootstrap.infra.svc.cluster.local:9092"]
-          topic: "spring-boot-logs"
+          paths: ["/var/log/containers/*.log"]
+      output.kafka:
+        hosts: ["my-cluster-kafka-bootstrap.infra.svc.cluster.local:9092"]
+        topic: "spring-boot-logs"
