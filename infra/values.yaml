@@ -128,8 +128,13 @@ elasticsearch:
 kibana:
   enabled: true
   elasticsearchHosts: "https://elasticsearch-master:9200"
-  # 보안 설정 추가
-
+  extraEnvs:
+    - name: ELASTICSEARCH_USERNAME
+      value: "elastic"
+    - name: ELASTICSEARCH_PASSWORD
+      value: "jXVVGdqThZfKzYgr"
+    - name: ELASTICSEARCH_SSL_VERIFICATIONMODE
+      value: "none"
   elasticsearchExternalConfig:
     elasticsearch.yml: |
       elasticsearch.ssl.verificationMode: none # 테스트 환경이라면 인증서 검증 무시
