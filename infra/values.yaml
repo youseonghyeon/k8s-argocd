@@ -128,6 +128,8 @@ elasticsearch:
 kibana:
   enabled: true
   elasticsearchHosts: "https://elasticsearch-master:9200"
+  preInstallJob:
+    enabled: false
   extraEnvs:
     - name: ELASTICSEARCH_USERNAME
       value: "elastic"
