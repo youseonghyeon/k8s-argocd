@@ -1,0 +1,49 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: eck-stack
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://helm.elastic.co
+    targetRevision: 0.9.0
+    chart: eck-stack
+    helm:
+      values: |
+        # Elasticsearch 설정
+        elasticsearch:
+          enabled: true
+          version: 8.11.0
+          nodeSets:
+          - name: default
+            count: 1
+            config:
+              node.store.allow_mmap: false # k3s 환경에서 필수 설정인 경우가 많음
+            podTemplate:
+              spec:
+                containers:
+                - name: elasticsearch
+                  resources:
+                    requests:
+                      memory: 2Gi
+                      cpu: 1
+                    limits:
+                      memory: 4Gi
+                      cpu: 2
+
+        # Kibana 설정
+        kibana:
+          enabled: true
+          spec:
+            count: 1
+            elasticsearchRef:
+              name: elasticsearch
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: elastic-stack
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    createNamespace: true
