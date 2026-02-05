@@ -21,8 +21,9 @@ spec:
     output.kafka:
       hosts: [ "my-cluster-kafka-bootstrap.kafka.svc:9092" ]
       topic: "k8s-logs"
-      codec.json:
-        pretty: false
+      required_acks: 1
+      compression: gzip
+      max_message_bytes: 1000000
   daemonSet:
     podTemplate:
       spec:
