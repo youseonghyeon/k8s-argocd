@@ -14,5 +14,6 @@ spec:
     matchNames:
       - default
   endpoints:
-    - port: http
+    - port: metrics # 서비스에 정의한 9113 포트 이름
       interval: 15s
+      path: /metrics
