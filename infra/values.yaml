@@ -84,7 +84,6 @@ logstash:
   logstashConfig:
     logstash.yml: |
       xpack.monitoring.enabled: false
-      # 라이선스 체크 등을 위해 올바른 주소와 보안 설정 명시
       xpack.monitoring.elasticsearch.hosts: ["https://elasticsearch-master.infra.svc.cluster.local:9200"]
       xpack.monitoring.elasticsearch.username: "elastic"
       xpack.monitoring.elasticsearch.password: "KiDNBQtI8js4rmtZ"
@@ -102,14 +101,9 @@ logstash:
       }
       output {
         elasticsearch {
-          # 2. https로 변경 및 정확한 서비스 이름 사용
           hosts => ["https://elasticsearch-master.infra.svc.cluster.local:9200"]
-      
-          # 3. 인증 정보 추가
           user => "elastic"
           password => "KiDNBQtI8js4rmtZ"
-      
-          # 4. 보안 통신 설정 (인증서 무시 안 함)
           ssl => true
           ssl_certificate_verification => true
           cacert => "/usr/share/logstash/config/certs/ca.crt"
