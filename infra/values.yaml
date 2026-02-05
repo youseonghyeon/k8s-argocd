@@ -79,6 +79,17 @@ elasticsearch:
 
 logstash:
   enabled: true
+
+  # 1. Logstash 내부 시스템이 엉뚱한 주소(http://elasticsearch)를 보지 않도록 설정
+  logstashConfig:
+    logstash.yml: |
+      xpack.monitoring.enabled: false
+      # 라이선스 체크 등을 위해 올바른 주소와 보안 설정 명시
+      xpack.monitoring.elasticsearch.hosts: ["https://elasticsearch-master.infra.svc.cluster.local:9200"]
+      xpack.monitoring.elasticsearch.username: "elastic"
+      xpack.monitoring.elasticsearch.password: "KiDNBQtI8js4rmtZ"
+      xpack.monitoring.elasticsearch.ssl.certificate_authority: "/usr/share/logstash/config/certs/ca.crt"
+
   pipeline:
     main.conf: |
       input {
@@ -91,11 +102,17 @@ logstash:
       }
       output {
         elasticsearch {
-          hosts => ["http://elasticsearch-master.infra.svc.cluster.local:9200"]
-          index => "k8s-logs-%{+YYYY.MM.dd}"
-          # 7버전 보안 미사용 시 user/password 주석 처리
-          # user => "elastic"
-          # password => "jXVVGdqThZfKzYgr"
+          # 2. https로 변경 및 정확한 서비스 이름 사용
+          hosts => ["https://elasticsearch-master.infra.svc.cluster.local:9200"]
+      
+          # 3. 인증 정보 추가
+          user => "elastic"
+          password => "KiDNBQtI8js4rmtZ"
+      
+          # 4. 보안 통신 설정 (인증서 무시 안 함)
+          ssl => true
+          ssl_certificate_verification => true
+          cacert => "/usr/share/logstash/config/certs/ca.crt"
         }
       }
 
