@@ -73,6 +73,9 @@ affinity: {}
 elasticsearch:
   enabled: true
   replicas: 1
+  service:
+    type: NodePort
+    nodePort: 30200
 
 logstash:
   enabled: true
