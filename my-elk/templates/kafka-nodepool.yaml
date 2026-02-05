@@ -11,6 +11,4 @@ spec:
     - controller
     - broker
   storage:
-    type: persistent-claim
-    size: 10Gi
-    class: "local-path"
+    type: ephemeral
