@@ -1,0 +1,8 @@
+spec:
+  source:
+    helm:
+      parameters:
+        - name: "grafana.service.type"
+          value: "NodePort"
+        - name: "grafana.adminPassword"
+          value: "admin"
