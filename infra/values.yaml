@@ -73,8 +73,6 @@ affinity: {}
 
 # --- Elasticsearch 7.17.3 ---
 elasticsearch:
-  commonAnnotations:
-    argocd.argoproj.io/sync-wave: "1"
   enabled: true
   imageTag: "7.17.3"
   replicas: 1
