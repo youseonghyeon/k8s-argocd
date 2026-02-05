@@ -75,24 +75,3 @@ spec:
       targetPort: 9113
   selector:
     app: test-nginx
----
-# 4. 서비스모니터 (프로메테우스 수집 등록)
-apiVersion: monitoring.coreos.com/v1
-kind: ServiceMonitor
-metadata:
-  name: nginx-monitor
-  namespace: monitoring
-  labels:
-    # 설치하신 Helm 릴리스 이름(prometheus-stack)과 일치해야 함
-    release: prometheus-stack
-spec:
-  selector:
-    matchLabels:
-      app: test-nginx
-  namespaceSelector:
-    matchNames:
-      - default
-  endpoints:
-    - port: metrics # 서비스의 포트 이름 'metrics'(9113)를 가리킴
-      interval: 15s
-      path: /metrics
