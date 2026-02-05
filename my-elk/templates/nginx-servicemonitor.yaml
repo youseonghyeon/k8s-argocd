@@ -5,15 +5,15 @@ metadata:
   name: nginx-monitor
   namespace: monitoring
   labels:
-    release: prometheus-stack
+    release: prometheus-stack # 프로메테우스가 찾고 있는 레이블과 일치
 spec:
   selector:
     matchLabels:
-      run: test-nginx # kubectl run으로 만들었을 때 기본 레이블
+      app: test-nginx # 서비스(Service)에 설정된 app: test-nginx 레이블과 일치시켜야 함
   namespaceSelector:
     matchNames:
-      - default
+      - default # 서비스가 떠 있는 네임스페이스
   endpoints:
-    - port: metrics # 서비스에 정의한 9113 포트 이름
+    - port: metrics # 서비스 포트 이름(9113)
       interval: 15s
       path: /metrics
