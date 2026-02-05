@@ -133,6 +133,8 @@ kibana:
       value: "elastic"
     - name: ELASTICSEARCH_PASSWORD
       value: "jXVVGdqThZfKzYgr"
+    - name: KIBANA_PASSWORD
+      value: "jXVVGdqThZfKzYgr"
     - name: ELASTICSEARCH_SSL_VERIFICATIONMODE
       value: "none"
   elasticsearchExternalConfig:
