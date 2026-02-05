@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: logstash-config
+  namespace: log
+data:
+  logstash.conf: |
+    input {
+      kafka {
+        bootstrap_servers => "my-cluster-kafka-bootstrap.kafka.svc:9092"
+        topics => ["k8s-logs"]
+        group_id => "logstash-group"
+        codec => "json"
+        consumer_threads => 3
+        decorate_events => true
+      }
+    }
+
+    filter {
+    }
+
+    output {
+      elasticsearch {
+        hosts => ["https://infra-es-es-http.log.svc:9200"]
+        user => "elastic"
+        password => "${ELASTIC_PASSWORD}"
+        ssl_certificate_verification => false
+        index => "k8s-logs-%{+YYYY.MM.dd}"
+      }
+    }

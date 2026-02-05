@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: logstash
+  namespace: log
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: logstash
+  template:
+    metadata:
+      labels:
+        app: logstash
+    spec:
+      containers:
+        - name: logstash
+          image: docker.elastic.co/logstash/logstash:8.12.0
+          env:
+            - name: ELASTIC_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: infra-es-es-elastic-user # 아까 확인한 Secret 이름
+                  key: elastic
+          ports:
+            - containerPort: 5044
+          volumeMounts:
+            - name: config-volume
+              mountPath: /usr/share/logstash/pipeline/logstash.conf
+              subPath: logstash.conf
+      volumes:
+        - name: config-volume
+          configMap:
+            name: logstash-config
