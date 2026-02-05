@@ -1,0 +1,34 @@
+apiVersion: kafka.strimzi.io/v1beta2
+kind: Kafka
+metadata:
+  name: my-cluster
+  namespace: kafka
+spec:
+  kafka:
+    version: 3.6.1
+    replicas: 1  # 브로커 1대로 축소
+    listeners:
+      - name: plain
+        port: 9092
+        type: internal
+        tls: false
+    config:
+      offsets.topic.replication.factor: 1
+      transaction.state.log.replication.factor: 1
+      transaction.state.log.min.isr: 1
+      default.replication.factor: 1
+      min.insync.replicas: 1
+      auto.create.topics.enable: "true"
+    storage:
+      type: persistent-claim
+      size: 5Gi # 테스트용이므로 용량 축소 가능
+      class: standard
+  zookeeper:
+    replicas: 1  # 주키퍼도 1대로 축소 가능
+    storage:
+      type: persistent-claim
+      size: 5Gi
+      class: standard
+  entityOperator:
+    topicOperator: {}
+    userOperator: {}
