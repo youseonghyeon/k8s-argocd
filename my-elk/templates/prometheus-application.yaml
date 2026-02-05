@@ -1,8 +1,29 @@
+# prometheus-application.yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: prometheus-stack
+  namespace: argocd
 spec:
+  project: default
   source:
+    chart: kube-prometheus-stack
+    repoURL: https://prometheus-community.github.io/helm-charts
+    targetRevision: 61.3.1
     helm:
+      # values 블록 대신 parameters 형식을 사용하여 명확하게 주입합니다.
       parameters:
         - name: "grafana.service.type"
           value: "NodePort"
         - name: "grafana.adminPassword"
           value: "admin"
+        - name: "prometheus.prometheusSpec.serviceMonitorSelectorNilUsesHelmValues"
+          value: "false"
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: monitoring
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    createNamespace: true
