@@ -3,21 +3,21 @@ name: infra
 description: A Helm chart for Kubernetes
 type: application
 version: 0.1.0
-appVersion: "1.16.0"
+appVersion: "7.17.3"
 
 dependencies:
   - name: strimzi-kafka-operator
-    version: "0.45.x"
+    version: "0.45.0" # Kafka 오퍼레이터는 최신을 유지해도 무방합니다.
     repository: "https://strimzi.io/charts/"
   - name: filebeat
-    version: "8.5.1"
+    version: "7.17.3" # 8.5.1 -> 7.17.3
     repository: "https://helm.elastic.co"
   - name: elasticsearch
-    version: "8.5.1"
+    version: "7.17.3" # 8.5.1 -> 7.17.3
     repository: "https://helm.elastic.co"
   - name: logstash
-    version: "8.5.1"
+    version: "7.17.3" # 8.5.1 -> 7.17.3
     repository: "https://helm.elastic.co"
   - name: kibana
-    version: "8.5.1"
+    version: "7.17.3" # 8.5.1 -> 7.17.3
     repository: "https://helm.elastic.co"
