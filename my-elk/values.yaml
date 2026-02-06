@@ -181,7 +181,6 @@ prometheus:
     serviceMonitorSelector: {}
 
 strimzi-kafka-operator:
-  clusterOperator:
-    extraEnvs:
-      - name: STRIMZI_KUBERNETES_VERSION
-        value: "major=1,minor=33"
+  extraEnvs:
+    - name: STRIMZI_KUBERNETES_VERSION
+      value: "major=1,minor=33"
