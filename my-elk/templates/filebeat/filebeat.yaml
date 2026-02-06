@@ -17,7 +17,7 @@ spec:
             - logs_path:
                 logs_path: "/var/log/containers/"
     output.kafka:
-      hosts: [ "my-cluster-kafka-bootstrap.kafka.svc:9092" ]
+      hosts: [ "my-cluster-kafka-bootstrap.infra.svc:9092" ]
       topic: "k8s-logs"
       required_acks: 1
       compression: gzip
