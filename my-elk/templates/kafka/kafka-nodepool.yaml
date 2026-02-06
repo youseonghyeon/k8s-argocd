@@ -2,7 +2,7 @@ apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaNodePool
 metadata:
   name: shared-pool
-  namespace: kafka
+  namespace: infra
   labels:
     strimzi.io/cluster: my-cluster
 spec:

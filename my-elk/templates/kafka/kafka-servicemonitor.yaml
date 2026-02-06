@@ -3,7 +3,7 @@ apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
   name: kafka-monitor
-  namespace: monitoring
+  namespace: infra
   labels:
     release: prometheus-stack
 spec:
@@ -12,7 +12,7 @@ spec:
       app: kafka-exporter
   namespaceSelector:
     matchNames:
-      - kafka
+      - infra
   endpoints:
     - port: metrics
       interval: 30s

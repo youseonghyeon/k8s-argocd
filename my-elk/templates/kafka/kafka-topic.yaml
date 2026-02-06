@@ -2,7 +2,7 @@ apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaTopic
 metadata:
   name: k8s-logs
-  namespace: kafka
+  namespace: infra
   labels:
     strimzi.io/cluster: my-cluster
 spec:

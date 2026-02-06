@@ -3,7 +3,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: kafka-exporter
-  namespace: kafka
+  namespace: infra
 spec:
   replicas: 1
   selector:
@@ -18,7 +18,7 @@ spec:
         - name: kafka-exporter
           image: danielqsj/kafka-exporter:latest
           args:
-            - --kafka.server=my-cluster-kafka-bootstrap.kafka.svc:9092
+            - --kafka.server=my-cluster-kafka-bootstrap.infra.svc:9092
           ports:
             - containerPort: 9308
 ---
@@ -26,7 +26,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: kafka-exporter
-  namespace: kafka
+  namespace: infra
   labels:
     app: kafka-exporter
 spec:
