@@ -5,14 +5,14 @@ metadata:
   name: kafka-monitor
   namespace: monitoring
   labels:
-    release: prometheus-stack # Helm 설치 시 사용한 이름과 일치해야 함
+    release: prometheus-stack
 spec:
   selector:
     matchLabels:
       app: kafka-exporter
   namespaceSelector:
     matchNames:
-      - kafka # Exporter가 살고 있는 네임스페이스
+      - kafka
   endpoints:
     - port: metrics
-      interval: 30s # 30초마다 수집
+      interval: 30s

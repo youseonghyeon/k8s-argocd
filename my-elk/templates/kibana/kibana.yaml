@@ -6,12 +6,11 @@ spec:
   version: {{ .Values.elkVersion | default "8.12.0" }}
   count: 1
   elasticsearchRef:
-    # 위에서 정의한 Elasticsearch의 이름과 연결
     name: {{ .Release.Name }}-es
   http:
     service:
       spec:
-        type: {{ .Values.kibana.serviceType | default "NodePort" }} # NodePort 또는 LoadBalancer
+        type: {{ .Values.kibana.serviceType | default "NodePort" }}
         ports:
           - name: https
             port: 5601

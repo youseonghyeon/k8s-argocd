@@ -17,6 +17,24 @@ data:
     }
 
     filter {
+      if [message] =~ /^\{.*/ {
+        json {
+          source => "message"
+          target => "app_log" # 앱 로그 필드들을 app_log 하위로 모으거나, 생략 시 루트로 풀림
+        }
+      }
+
+      date {
+        match => [ "[app_log][timestamp]", "ISO8601" ]
+        target => "@timestamp"
+      }
+
+      fingerprint {
+        source => ["@timestamp", "[kubernetes][pod][name]", "message"]
+        target => "[@metadata][fingerprint]"
+        method => "SHA1"
+        key => "my_secret_key"
+      }
     }
 
     output {
@@ -26,5 +44,6 @@ data:
         password => "${ELASTIC_PASSWORD}"
         ssl_certificate_verification => false
         index => "k8s-logs-%{+YYYY.MM.dd}"
+        document_id => "%{[@metadata][fingerprint]}"
       }
     }
