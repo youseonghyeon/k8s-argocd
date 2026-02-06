@@ -167,16 +167,21 @@ elasticsearch:
   storage: "10Gi"
 
 kibana:
-  serviceType: NodePort  # 로컬/베어메탈 환경이면 NodePort, 클라우드면 LoadBalancer 추천
+  serviceType: NodePort
   nodePort: 30601
 
 grafana:
-  adminPassword: "admin" # 초기 비밀번호 설정
+  adminPassword: "admin"
   service:
-    type: NodePort # 외부 접속을 위해 NodePort로 변경
+    type: NodePort
 
 prometheus:
   prometheusSpec:
-    # ServiceMonitor를 찾을 때 사용할 레이블 규칙
     serviceMonitorSelectorNilUsesHelmValues: false
     serviceMonitorSelector: {}
+
+strimzi-kafka-operator:
+  clusterOperator:
+    extraEnvs:
+      - name: STRIMZI_KUBERNETES_VERSION
+        value: "major=1,minor=33"
