@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: logstash
-  namespace: log
+  namespace: infra
 spec:
   replicas: 1
   selector:
