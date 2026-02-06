@@ -20,14 +20,17 @@ spec:
             - name: ELASTIC_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: infra-es-es-elastic-user # 아까 확인한 Secret 이름
+                  name: infra-es-es-elastic-user
                   key: elastic
+            - name: CONFIG_RELOAD_AUTOMATIC
+              value: "true"
+            - name: CONFIG_RELOAD_INTERVAL
+              value: "60s"
           ports:
             - containerPort: 5044
           volumeMounts:
             - name: config-volume
               mountPath: /usr/share/logstash/pipeline/logstash.conf
-              subPath: logstash.conf
       volumes:
         - name: config-volume
           configMap:
