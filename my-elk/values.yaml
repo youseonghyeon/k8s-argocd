@@ -181,7 +181,9 @@ kube-prometheus-stack:
     service:
       type: NodePort
     adminPassword: "admin"
+    defaultDashboardsEnabled: true
   prometheus:
+    retention: 15d
     prometheusSpec:
       serviceMonitorSelectorNilUsesHelmValues: false
 
