@@ -170,17 +170,20 @@ kibana:
   serviceType: NodePort
   nodePort: 30601
 
-grafana:
-  adminPassword: "admin"
-  service:
-    type: NodePort
-
-prometheus:
-  prometheusSpec:
-    serviceMonitorSelectorNilUsesHelmValues: false
-    serviceMonitorSelector: {}
-
 strimzi-kafka-operator:
+  enabled: true
   extraEnvs:
     - name: STRIMZI_KUBERNETES_VERSION
       value: "major=1,minor=33"
+
+kube-prometheus-stack:
+  grafana:
+    service:
+      type: NodePort
+    adminPassword: "admin"
+  prometheus:
+    prometheusSpec:
+      serviceMonitorSelectorNilUsesHelmValues: false
+
+eck-operator:
+  enabled: true
