@@ -207,12 +207,13 @@ kube-prometheus-stack:
           name: thanos-objstore-config # 아래에서 만들 Secret 이름
 
 thanos:
-  # 기본적으로 quay.io/thanos/thanos 이미지를 사용하므로 pull 에러가 없습니다.
   query:
     enabled: true
-    # 이 차트에서는 endpoints 키를 사용하여 Sidecar 주소를 연결합니다.
     endpoints:
-      - infra-kube-prometheus-stac-prometheus.infra.svc.cluster.local:10901
+      # 1. Store Gateway (현재 작동 중인 것)
+      - infra-thanos-store-gateway-headless.infra.svc.cluster.local:10901
+      # 2. Prometheus Sidecar (추가해야 할 것)
+      - prometheus-operated.infra.svc.cluster.local:10901
 
 eck-operator:
   enabled: true
