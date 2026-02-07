@@ -208,9 +208,11 @@ kube-prometheus-stack:
           name: thanos-objstore-config # 아래에서 만들 Secret 이름
 
 thanos:
-  query:
+  # 커뮤니티 차트는 자동으로 quay.io/thanos/thanos 공식 이미지를 당겨옵니다. (Bitnami 이미지 에러 해방!)
+  querier:
     enabled: true
-    additionalStores:
+    # Sidecar 주소 (gRPC 10901 포트)
+    stores: # 커뮤니티 차트는 'stores' 또는 'additionalStores'를 사용합니다.
       - infra-kube-prometheus-stac-prometheus.infra.svc.cluster.local:10901
 
 eck-operator:

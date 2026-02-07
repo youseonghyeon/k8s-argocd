@@ -34,5 +34,5 @@ dependencies:
     version: "51.0.0"
     repository: "https://prometheus-community.github.io/helm-charts"
   - name: thanos
-    version: "0.15.0"
-    repository: "https://thanos-io.github.io/charts"
+    version: "1.16.2" # 비트나미의 15.x.x가 아닌 커뮤니티의 실제 버전
+    repository: "https://prometheus-community.github.io/helm-charts"
