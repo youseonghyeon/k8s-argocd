@@ -194,9 +194,9 @@ kube-prometheus-stack:
     retention: 15d
     prometheusSpec:
       serviceMonitorSelectorNilUsesHelmValues: false
-      serviceMonitorSelector:
-        matchLabels:
-          release: prometheus-stack
+#      serviceMonitorSelector:
+#        matchLabels:
+#          release: prometheus-stack
       serviceMonitorNamespaceSelector: {}
 
 eck-operator:
