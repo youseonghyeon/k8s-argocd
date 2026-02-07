@@ -193,11 +193,13 @@ kube-prometheus-stack:
   prometheus:
     retention: 15d
     prometheusSpec:
+      externalLabels:
+        cluster: "my-elk-cluster"
       serviceMonitorSelectorNilUsesHelmValues: false
-#      serviceMonitorSelector:
-#        matchLabels:
-#          release: prometheus-stack
-      serviceMonitorNamespaceSelector: {}
+      thanos:
+        objectStorageConfig:
+          key: objstore.yml
+          name: thanos-objstore-config # 아래에서 만들 Secret 이름
 
 eck-operator:
   enabled: true
