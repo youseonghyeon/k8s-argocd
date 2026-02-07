@@ -194,7 +194,6 @@ kube-prometheus-stack:
       - name: Thanos
         type: prometheus
         url: http://thanos-query.infra.svc.cluster.local:9090 # 나중에 띄울 Querier 서비스 주소
-        access: proxy
         isDefault: true # 기존 Prometheus 대신 Thanos를 기본으로 사용
   prometheus:
     retention: 15d
@@ -208,11 +207,11 @@ kube-prometheus-stack:
           name: thanos-objstore-config # 아래에서 만들 Secret 이름
 
 thanos:
-  # 커뮤니티 차트는 자동으로 quay.io/thanos/thanos 공식 이미지를 당겨옵니다. (Bitnami 이미지 에러 해방!)
-  querier:
+  # 기본적으로 quay.io/thanos/thanos 이미지를 사용하므로 pull 에러가 없습니다.
+  query:
     enabled: true
-    # Sidecar 주소 (gRPC 10901 포트)
-    stores: # 커뮤니티 차트는 'stores' 또는 'additionalStores'를 사용합니다.
+    # 이 차트에서는 endpoints 키를 사용하여 Sidecar 주소를 연결합니다.
+    endpoints:
       - infra-kube-prometheus-stac-prometheus.infra.svc.cluster.local:10901
 
 eck-operator:
