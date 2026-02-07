@@ -190,6 +190,12 @@ kube-prometheus-stack:
       type: NodePort
     adminPassword: "admin"
     defaultDashboardsEnabled: true
+    additionalDataSources:
+      - name: Thanos
+        type: prometheus
+        url: http://thanos-query.infra.svc.cluster.local:9090 # 나중에 띄울 Querier 서비스 주소
+        access: proxy
+        isDefault: true # 기존 Prometheus 대신 Thanos를 기본으로 사용
   prometheus:
     retention: 15d
     prometheusSpec:
