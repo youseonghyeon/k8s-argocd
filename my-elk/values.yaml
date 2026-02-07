@@ -207,5 +207,15 @@ kube-prometheus-stack:
           key: objstore.yml
           name: thanos-objstore-config # 아래에서 만들 Secret 이름
 
+thanos:
+  query:
+    enabled: true
+    stores:
+      - infra-kube-prometheus-stac-prometheus.infra.svc.cluster.local:10901
+
+  bucketweb: { enabled: false }
+  compactor: { enabled: false }
+  storegateway: { enabled: false }
+
 eck-operator:
   enabled: true

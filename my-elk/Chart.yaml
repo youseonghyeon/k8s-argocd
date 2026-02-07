@@ -33,3 +33,6 @@ dependencies:
   - name: kube-prometheus-stack
     version: "51.0.0"
     repository: "https://prometheus-community.github.io/helm-charts"
+  - name: thanos
+    version: "15.7.5"
+    repository: "https://charts.bitnami.com/bitnami"
