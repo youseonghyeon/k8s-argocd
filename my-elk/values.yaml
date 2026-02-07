@@ -208,7 +208,7 @@ kube-prometheus-stack:
           name: thanos-objstore-config # 아래에서 만들 Secret 이름
 
 thanos:
-  querier: # 'query'에서 'querier'로 변경
+  query:
     enabled: true
     additionalStores:
       - infra-kube-prometheus-stac-prometheus.infra.svc.cluster.local:10901
