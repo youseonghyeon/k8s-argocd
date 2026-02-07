@@ -9,6 +9,17 @@ spec:
       count: {{ .Values.elasticsearch.nodeCount | default 1 }}
       config:
         node.store.allow_mmap: false
+      podTemplate:
+        spec:
+          containers:
+            - name: elasticsearch
+              resources:
+                requests:
+                  cpu: {{ .Values.elasticsearch.resources.requests.cpu | default "1" }}
+                  memory: {{ .Values.elasticsearch.resources.requests.memory | default "4Gi" }}
+                limits:
+                  cpu: {{ .Values.elasticsearch.resources.limits.cpu | default "2" }}
+                  memory: {{ .Values.elasticsearch.resources.limits.memory | default "4Gi" }}
       volumeClaimTemplates:
         - metadata:
             name: elasticsearch-data
