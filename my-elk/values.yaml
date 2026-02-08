@@ -223,10 +223,19 @@ loki-stack:
 fluent-bit:
   enabled: true
   config:
+    filters: |
+      [FILTER]
+          Name                kubernetes
+          Match               kube.*
+          Merge_Log           On
+          Keep_Log            Off
+          K8S-Logging.Parser  On
+          K8S-Logging.Exclude Off
+
     outputs: |
       [OUTPUT]
           Name   loki
           Match  *
           Host   infra-loki.infra.svc.cluster.local
           Port   3100
-          Labels job=fluent-bit
+          Labels job=fluent-bit, namespace=$kubernetes['namespace_name'], container=$kubernetes['container_name'], pod=$kubernetes['pod_name']
