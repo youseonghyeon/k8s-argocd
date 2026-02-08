@@ -190,11 +190,6 @@ kube-prometheus-stack:
       type: NodePort
     adminPassword: "admin"
     defaultDashboardsEnabled: true
-    additionalDataSources:
-      - name: Thanos
-        type: prometheus
-        url: http://infra-thanos-query.infra.svc.cluster.local:10902
-        isDefault: true
   prometheus:
     retention: 15d
     prometheusSpec:
