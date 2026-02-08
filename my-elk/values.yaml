@@ -193,8 +193,8 @@ kube-prometheus-stack:
     additionalDataSources:
       - name: Thanos
         type: prometheus
-        url: http://thanos-query.infra.svc.cluster.local:9090 # 나중에 띄울 Querier 서비스 주소
-        isDefault: true # 기존 Prometheus 대신 Thanos를 기본으로 사용
+        url: http://infra-thanos-query.infra.svc.cluster.local:10902
+        isDefault: true
   prometheus:
     retention: 15d
     prometheusSpec:
