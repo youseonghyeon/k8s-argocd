@@ -206,20 +206,16 @@ kube-prometheus-stack:
           key: objstore.yml
           name: thanos-objstore-config
 
-  thanos:
-    query:
-      enabled: true
-      additionalEndpoints:
-        - dns+prometheus-operated.infra.svc.cluster.local:10901
-      endpoints:
-        - dns+prometheus-operated.infra.svc.cluster.local:10901
-      additionalEndpointGroups:
-        - dnssrv+_grpc._tcp.prometheus-operated.infra.svc.cluster.local
-      readinessProbe:
-        initialDelaySeconds: 10
-        timeoutSeconds: 10
-        periodSeconds: 10
-        failureThreshold: 6
+thanos:
+  additionalEndpoints:
+    - dns+prometheus-operated.infra.svc.cluster.local:10901
+  query:
+    enabled: true
+    readinessProbe:
+      initialDelaySeconds: 10
+      timeoutSeconds: 10
+      periodSeconds: 10
+      failureThreshold: 6
 
 eck-operator:
   enabled: true
