@@ -193,8 +193,6 @@ kube-prometheus-stack:
   prometheus:
     prometheusSpec:
       retention: 5m
-      externalLabels:
-        cluster: "my-elk-cluster"
       serviceMonitorSelectorNilUsesHelmValues: false
       thanos:
         objectStorageConfig:
