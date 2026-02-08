@@ -212,6 +212,11 @@ thanos:
     endpoints:
       - dns+prometheus-operated.infra.svc.cluster.local:10901
       - dns+infra-thanos-store-gateway-headless.infra.svc.cluster.local:10901
+    readinessProbe:
+      initialDelaySeconds: 30 # 시작 후 30초 대기
+      timeoutSeconds: 10      # 응답 대기 시간을 10초로 연장
+      periodSeconds: 10
+      failureThreshold: 6
 
 eck-operator:
   enabled: true
