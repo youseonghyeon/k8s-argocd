@@ -210,10 +210,8 @@ thanos:
   query:
     enabled: true
     endpoints:
-      # 1. Store Gateway (현재 작동 중인 것)
-      - infra-thanos-store-gateway-headless.infra.svc.cluster.local:10901
-      # 2. Prometheus Sidecar (추가해야 할 것)
-      - prometheus-operated.infra.svc.cluster.local:10901
+      - dns+prometheus-operated.infra.svc.cluster.local:10901
+      - dns+infra-thanos-store-gateway-headless.infra.svc.cluster.local:10901
 
 eck-operator:
   enabled: true
