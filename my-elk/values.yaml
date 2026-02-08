@@ -191,7 +191,7 @@ kube-prometheus-stack:
     adminPassword: "admin"
     defaultDashboardsEnabled: true
   prometheus:
-    retention: 15d
+    retention: 5m
     prometheusSpec:
       externalLabels:
         cluster: "my-elk-cluster"
