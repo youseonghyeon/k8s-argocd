@@ -227,6 +227,6 @@ fluent-bit:
       [OUTPUT]
           Name   loki
           Match  *
-          Host   {{ .Release.Name }}-loki-stack.{{ .Release.Namespace }}.svc.cluster.local
+          Host   infra-loki.infra.svc.cluster.local
           Port   3100
           Labels job=fluent-bit
