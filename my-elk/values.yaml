@@ -212,3 +212,21 @@ thanos:
 
 eck-operator:
   enabled: true
+
+loki-stack:
+  loki:
+    enabled: true
+    persistence:
+      enabled: true
+      size: 10Gi  # 필요에 따라 조절
+
+fluent-bit:
+  enabled: true
+  config:
+    outputs: |
+      [OUTPUT]
+          Name   loki
+          Match  *
+          Host   {{ .Release.Name }}-loki-stack.{{ .Release.Namespace }}.svc.cluster.local
+          Port   3100
+          Labels job=fluent-bit

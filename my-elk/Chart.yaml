@@ -34,5 +34,11 @@ dependencies:
     version: "51.0.0"
     repository: "https://prometheus-community.github.io/helm-charts"
   - name: thanos
-    version: "1.22.1" # 2026년 기준 실제 안정 버전 (Artifact Hub 확인 완료)
+    version: "1.22.1"
     repository: "https://stevehipwell.github.io/helm-charts/"
+  - name: loki-stack
+    version: 2.10.2
+    repository: "https://grafana.github.io/helm-charts"
+  - name: fluent-bit
+    version: 0.48.x
+    repository: "https://fluent.github.io/helm-charts"
